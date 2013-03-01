@@ -18,7 +18,7 @@ $('#go').click(function(){
 	}
 });
 function geo_success(position) {
-	printLatLng(position.coords.latitude, position.coords.longtitude);
+	printLatLng(position.coords.latitude, position.coords.longitude);
 }
 function geo_fail(error) {
 	switch(error.code) {
@@ -28,8 +28,9 @@ function geo_fail(error) {
 		default: error('An unknown error occurred while requesting your location.');
 	}
 }
-function printLAtLng(latitude, longtitude) {
-	$('body')
+function printLatLng(latitude, longitude) {
+	$('body').append('<span>Your latitude:' + latitude + '</span>');
+	$('body').append('<span>Your longtitude:' + longitude + '</span>');
 }
 function error(msg) {
 	alert(msg);
