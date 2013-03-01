@@ -62,7 +62,7 @@ function printLatLng(latitude, longitude,isMaxMind) {
 	$('body').append('<p><a href="http://www.maxmind.com" target="_blank">IP to Location Service provided by MaxMind</a></p>');
 	}
 }
-function geotoaddr_success(positon) {
+function geotoaddr_success(position) {
 	printAddr(position.coords.latitude, position.coords.longitude, false);
 }
 function geotoaddr_fail(error) {
