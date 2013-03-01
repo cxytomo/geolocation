@@ -1,0 +1,39 @@
+<html>
+<head>
+	<title>Geolocation</title>
+</head>
+<body>
+<input type="button" id="go" value="Click Me To View Your Location" />
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.js"></script>
+<script>window.jQuery || document.write("<script src='jquery-1.8.2.js'>\x3c/script>")</script>
+<script>
+//1.test if access to html5 geolocation
+//2.then get the basic geolocation data
+//3.append it to document to display it.
+$('#go').click(function(){
+	if(navigator && navigator.geolocation) {
+		navigator.geolocation.getCurrentPosition(geo_success, geo_fail);
+	} else {
+		error("Geolocation is not supported!");
+	}
+});
+function geo_success(position) {
+	printLatLng(position.coords.latitude, position.coords.longtitude);
+}
+function geo_fail(error) {
+	switch(error.code) {
+		case 1: error('The user denied the request for location information.');break;
+		case 2: error('Your location information is unavailable.');break;
+		case 3: error('The request to get your location timed out.');break;
+		default: error('An unknown error occurred while requesting your location.');
+	}
+}
+function printLAtLng(latitude, longtitude) {
+	$('body')
+}
+function error(msg) {
+	alert(msg);
+}
+</script>
+</body>
+</html>
