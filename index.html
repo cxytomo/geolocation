@@ -24,16 +24,16 @@ $(document).ready(function(){
 		e = e || window.event;
 		this.target = e.target || e.srcElement;
 		if(navigator && navigator.geolocation) {
-			navigator.geolocation.getCurrentPosition(geo_success(this.target), geo_fail(this.target));
+			navigator.geolocation.getCurrentPosition(geo_success, geo_fail);
 		} else {
-			printLatLng(this.target, geoip_latitude(), geoip_longitude(), true);
+			printLatLng(geoip_latitude(), geoip_longitude(), true);
 		}
 	});
 });
-function geo_success(target, position) {
-	printLatLng(target, position.coords.latitude, position.coords.longitude, false);
+function geo_success(position) {
+	printLatLng(position.coords.latitude, position.coords.longitude, false);
 }
-function geo_fail(target, error) {
+function geo_fail(error) {
 	console.log(error);
 	console.log(error.code);
 /*	while failing to get the current location,it return an error object,with property code to present the reason why it failed.
@@ -44,15 +44,16 @@ function geo_fail(target, error) {
 		default: error('An unknown error occurred while requesting your location.');
 	}
 */
-	printLatLng(target, geoip_latitude(), geoip_longitude(), true);
+	printLatLng(geoip_latitude(), geoip_longitude(), true);
+	
+}
+function printLatLng(latitude, longitude,isMaxMind) {
+	$('body').append('<p>Your latitude:' + latitude + '</p>');
+	$('body').append('<p>Your longtitude:' + longitude + '</p>');
 	//it's needed if you want free support from maxmind
 	if(isMaxMind) {
-	target.parentNode.appendChild('<p><a href="http://www.maxmind.com" target="_blank">IP to Location Service provided by MaxMind</a></p>');
+	$('body').append('<p><a href="http://www.maxmind.com" target="_blank">IP to Location Service provided by MaxMind</a></p>');
 	}
-}
-function printLatLng(target, latitude, longitude) {
-	target.parentNode.appendChild('<p>Your latitude:' + latitude + '</p>');
-	target.parentNode.appendChild('<p>Your longtitude:' + longitude + '</p>');
 }
 /*function error(msg) {
 	alert(msg);
