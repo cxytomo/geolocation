@@ -22,18 +22,18 @@
 $(document).ready(function(){
 	$('#go').click(function(e){
 		e = e || window.event;
-		var target = e.target || e.srcElement;
+		this.target = e.target || e.srcElement;
 		if(navigator && navigator.geolocation) {
-			navigator.geolocation.getCurrentPosition(geo_success, geo_fail(target));
+			navigator.geolocation.getCurrentPosition(geo_success(this.target), geo_fail(this.target));
 		} else {
-			printLatLng(target, geoip_latitude(), geoip_longitude(), true);
+			printLatLng(this.target, geoip_latitude(), geoip_longitude(), true);
 		}
 	});
 });
-function geo_success(position) {
+function geo_success(target, position) {
 	printLatLng(target, position.coords.latitude, position.coords.longitude, false);
 }
-function geo_fail(error) {
+function geo_fail(target, error) {
 	console.log(error);
 	console.log(error.code);
 /*	while failing to get the current location,it return an error object,with property code to present the reason why it failed.
@@ -54,9 +54,9 @@ function printLatLng(target, latitude, longitude) {
 	target.parentNode.appendChild('<p>Your latitude:' + latitude + '</p>');
 	target.parentNode.appendChild('<p>Your longtitude:' + longitude + '</p>');
 }
-function error(msg) {
+/*function error(msg) {
 	alert(msg);
-}
+}*/
 </script>
 </body>
 </html>
