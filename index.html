@@ -3,34 +3,56 @@
 	<title>Geolocation</title>
 </head>
 <body>
-<input type="button" id="go" value="Click Me To View Your Location" />
+	<form>
+	  <fieldset class="basic">
+	    <legend>Basic Geolocation Data</legend>
+		<input type="button" id="go" value="Click Me To View Your Location" />
+	  </fieldset>
+	  <fieldset class="inv_geocode">
+	  	<legend>Inverse Geocode</legend>
+	  </fieldset>
+	</form>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.js"></script>
 <script>window.jQuery || document.write("<script src='jquery-1.8.2.js'>\x3c/script>")</script>
+<script src="http://j.maxmind.com/app/geoip.js"></script>
 <script>
 //1.test if access to html5 geolocation
 //2.then get the basic geolocation data
 //3.append it to document to display it.
-$('#go').click(function(){
-	if(navigator && navigator.geolocation) {
-		navigator.geolocation.getCurrentPosition(geo_success, geo_fail);
-	} else {
-		error("Geolocation is not supported!");
-	}
+$(document).ready(function(){
+	$('#go').click(function(e){
+		e = e || window.event;
+		var target = e.target || e.srcElement;
+		if(navigator && navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(geo_success, geo_fail(target));
+		} else {
+			printLatLng(target, geoip_latitude(), geoip_longitude(), true);
+		}
+	});
 });
 function geo_success(position) {
-	printLatLng(position.coords.latitude, position.coords.longitude);
+	printLatLng(target, position.coords.latitude, position.coords.longitude, false);
 }
 function geo_fail(error) {
+	console.log(error);
+	console.log(error.code);
+/*	while failing to get the current location,it return an error object,with property code to present the reason why it failed.
 	switch(error.code) {
 		case 1: error('The user denied the request for location information.');break;
 		case 2: error('Your location information is unavailable.');break;
 		case 3: error('The request to get your location timed out.');break;
 		default: error('An unknown error occurred while requesting your location.');
 	}
+*/
+	printLatLng(target, geoip_latitude(), geoip_longitude(), true);
+	//it's needed if you want free support from maxmind
+	if(isMaxMind) {
+	target.parentNode.appendChild('<p><a href="http://www.maxmind.com" target="_blank">IP to Location Service provided by MaxMind</a></p>');
+	}
 }
-function printLatLng(latitude, longitude) {
-	$('body').append('<span>Your latitude:' + latitude + '</span>');
-	$('body').append('<span>Your longtitude:' + longitude + '</span>');
+function printLatLng(target, latitude, longitude) {
+	target.parentNode.appendChild('<p>Your latitude:' + latitude + '</p>');
+	target.parentNode.appendChild('<p>Your longtitude:' + longitude + '</p>');
 }
 function error(msg) {
 	alert(msg);
